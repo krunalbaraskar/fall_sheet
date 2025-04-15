@@ -1,9 +1,9 @@
-% 3D Falling Paper Simulation with 3D Close-Up View,
-% Live Trajectory, Paper Orientation, Black Velocity Arrow,
+% 3D Falling Sheet Simulation with 3D Close-Up View,
+% Live Trajectory, Sheet Orientation, Black Velocity Arrow,
 % and Data Export to Excel with Additional Aerodynamic Quantities
 clear; clc; close all;
 
-%% Paper Parameters
+%% Sheet Parameters
 width = 0.2;       % x-dimension (m)
 height = 0.15;     % y-dimension (m)
 thickness = 0.001; % z-dimension (m) (thin sheet)
@@ -39,7 +39,7 @@ data = zeros(N, 21);
 % Function to convert Euler angles to rotation matrix (ZYX convention)
 rotm = @(eul) eul2rotm(eul);
 
-%% Define Paper Corners (local coordinates)
+%% Define Sheet Corners (local coordinates)
 corners = 0.5 * [ -width  width  width -width;
                   -height -height height height;
                    0      0     0      0];
@@ -51,7 +51,7 @@ figure;
 % Left subplot: Overall view with trajectory
 ax1 = subplot(1,2,1);
 hold(ax1, 'on');
-hPaper1 = patch('Parent', ax1, 'Vertices', zeros(4,3), 'Faces', [1 2 3 4], 'FaceColor', 'b');
+hSheet1 = patch('Parent', ax1, 'Vertices', zeros(4,3), 'Faces', [1 2 3 4], 'FaceColor', 'b');
 hTrajectory = line('Parent', ax1, 'XData', [], 'YData', [], 'ZData', [], ...
     'Color', 'r', 'LineWidth', 1.5);
 axis(ax1, [-6 6 -6 6 0 6]);
@@ -61,10 +61,10 @@ view(ax1, 35, 20);
 grid(ax1, 'on');
 axis(ax1, 'equal');
 
-% Right subplot: 3D Close-Up View with paper orientation and velocity arrow
+% Right subplot: 3D Close-Up View with Sheet orientation and velocity arrow
 ax2 = subplot(1,2,2);
 hold(ax2, 'on');
-hPaper2 = patch('Parent', ax2, 'Vertices', zeros(4,3), 'Faces', [1 2 3 4], 'FaceColor', 'b');
+hSheet2 = patch('Parent', ax2, 'Vertices', zeros(4,3), 'Faces', [1 2 3 4], 'FaceColor', 'b');
 % Create an initial velocity arrow (quiver3) with black color ('k')
 scale_v = 0.05;  % scale factor for velocity arrow length
 hVel = quiver3(ax2, pos(1), pos(2), pos(3), scale_v*vel(1), scale_v*vel(2), scale_v*vel(3), ...
@@ -94,14 +94,14 @@ for i = 1:N
     v_rel = vel - wind_velocity;
     v_mag = norm(v_rel) + 1e-6;
     
-    % Paper’s normal (z-axis in body frame)
+    % Sheet’s normal (z-axis in body frame)
     n = R(:,3);
     
     % Compute projected area for drag force
     A_proj = width * height * abs(dot(n, v_rel/v_mag));
     Fd = -0.5 * rho_air * Cd * A_proj * v_mag * v_rel;
     
-    % Compute lift force (perpendicular to both the paper's normal and relative velocity)
+    % Compute lift force (perpendicular to both the Sheet's normal and relative velocity)
     lift_dir = cross(cross(v_rel, n), v_rel);
     lift_dir = lift_dir / (norm(lift_dir) + 1e-6);
     Fl = 0.5 * rho_air * Cl * A_proj * v_mag^2 * lift_dir;
@@ -117,7 +117,7 @@ for i = 1:N
     F_net = Fd + Fl + Fb + Fg;
     acc = F_net / mass;
     
-    % Compute torque (apply lift force at a small offset along the paper's z-axis)
+    % Compute torque (apply lift force at a small offset along the Sheet's z-axis)
     r_lift = R * [0; 0; 0.001];
     torque = cross(r_lift, Fl);
     
@@ -144,7 +144,7 @@ for i = 1:N
     % Log simulation data (ensure final value is saved)
     data(i,:) = [t, pos(:)', vel(:)', eul(:)', omega(:)', L(:)', A_proj, KE, Fd_mag, Fl_mag, Re];
     
-    % Stop simulation if paper hits the ground (z <= 0)
+    % Stop simulation if Sheet hits the ground (z <= 0)
     if pos(3) <= 0
         fprintf('Hit ground at t = %.2f s\n', t);
         break;
@@ -155,17 +155,17 @@ for i = 1:N
     traj_y(end+1) = pos(2);
     traj_z(end+1) = pos(3);
     
-    %% Transform Paper Corners to World Coordinates
+    %% Transform Sheet Corners to World Coordinates
     transformed = (R * corners) + pos;
     
     %% Update Overall View (ax1)
-    set(hPaper1, 'Vertices', transformed');
+    set(hSheet1, 'Vertices', transformed');
     set(hTrajectory, 'XData', traj_x, 'YData', traj_y, 'ZData', traj_z);
     title(ax1, sprintf('Overall Trajectory\nt = %.2f s | Height = %.2f m', t, pos(3)));
     
     %% Update 3D Close-Up View (ax2)
-    set(hPaper2, 'Vertices', transformed');
-    % Adjust the close-up view to center on the current paper position (with a margin)
+    set(hSheet2, 'Vertices', transformed');
+    % Adjust the close-up view to center on the current Sheet position (with a margin)
     margin = 0.5;
     axis(ax2, [pos(1)-margin pos(1)+margin, pos(2)-margin pos(2)+margin, pos(3)-margin pos(3)+margin]);
     title(ax2, sprintf('3D Close-Up View\nt = %.2f s | Height = %.2f m', t, pos(3)));
@@ -264,11 +264,11 @@ T_table = array2table(data_downsampled, 'VariableNames', ...
      'A_proj','KE','Drag','Lift','Reynolds'});
 
 % Write the table to an Excel file.
-fileName = fullfile(pwd, 'FallingPaperData.xlsx');
+fileName = fullfile(pwd, 'FallingSheetData.xlsx');
 disp(['Saving Excel file to: ', fileName]);
 try
     writetable(T_table, fileName);
-    fprintf('Excel sheet "FallingPaperData.xlsx" generated with simulation data.\n');
+    fprintf('Excel sheet "FallingSheetData.xlsx" generated with simulation data.\n');
 catch ME
     fprintf('Error writing to Excel file: %s\n', ME.message);
 end
@@ -285,3 +285,4 @@ function R = eul2rotm(eul)
           cos(theta)*sin(psi) + sin(phi)*sin(theta)*cos(psi),  cos(phi)*cos(psi), sin(theta)*sin(psi) - sin(phi)*cos(theta)*cos(psi);
          -cos(phi)*sin(theta), sin(phi), cos(phi)*cos(theta) ];
 end
+
