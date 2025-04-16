@@ -113,7 +113,7 @@ The lift force acts perpendicular to the relative wind direction:
 where \(C_l\) is the lift coefficient and \(\hat{l}\) is the unit vector in the lift direction. The vector \(\hat{l}\) is typically computed based on the cross products involving the sheet's normal vector.
 
 \subsection{Rotational Dynamics}
-Rotational motion is captured via Euler angles (yaw, pitch, and roll). For a thin rectangular sheet, the moment of inertia is approximated by:
+Rotational motion is captured via Euler angles (yaw, pitch, and roll). For a rectangular sheet, the moment of inertia is approximated by:
 \[
 I_{xx} = \frac{1}{12}\, m\,(h^2 + t^2), \quad I_{yy} = \frac{1}{12}\, m\,(w^2 + t^2), \quad I_{zz} = \frac{1}{12}\, m\,(w^2 + h^2),
 \]
@@ -406,7 +406,8 @@ N = floor(T/dt);
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1.0\linewidth]{G5.png}
-    \caption{Data plot with respect to time.}
+    \caption{Data plot with respect to time.} 
+    \small\text{(All the quantities are in their SI units.)}
 \end{figure}
 
 \clearpage
