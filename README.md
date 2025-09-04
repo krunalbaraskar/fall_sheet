@@ -70,7 +70,7 @@ This simulation provides a realistic and visual understanding of thin-body aerod
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/Parthsg07/fall_reconstruction.git](https://github.com/krunalbaraskar/fall_sheet.git)
+   git clone (https://github.com/krunalbaraskar/fall_sheet.git)
    cd fall_reconstruction
    ```
 2. Open `main.m` in MATLAB.
@@ -86,8 +86,8 @@ This simulation provides a realistic and visual understanding of thin-body aerod
 
 * Aryan Sambare
 * Krunal Baraskar
-* Tushar Shrivastav
 * Parth Ganjewar
+* Tushar Shrivastav
 
 ## References
 
