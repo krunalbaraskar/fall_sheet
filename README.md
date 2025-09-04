@@ -10,8 +10,6 @@ The project report latex source file can be viewed using `sheet_fall_report.zip`
 
 ## Project Overview
 
-Project Overview
-
 This project focuses on the numerical simulation of the free fall of a thin rectangular plastic sheet using MATLAB. The simulation framework was designed to capture both translational motion (linear displacement under external forces) and rotational motion (tumbling and angular displacement), thereby providing a comprehensive model of the sheet’s dynamics.
 
 The forces incorporated into the model include:
