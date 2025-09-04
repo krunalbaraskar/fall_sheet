@@ -15,14 +15,10 @@ Project Overview
 This project focuses on the numerical simulation of the free fall of a thin rectangular plastic sheet using MATLAB. The simulation framework was designed to capture both translational motion (linear displacement under external forces) and rotational motion (tumbling and angular displacement), thereby providing a comprehensive model of the sheet’s dynamics.
 
 The forces incorporated into the model include:
-
-Gravity, driving the downward motion.
-
-Buoyancy, accounting for the displaced air volume.
-
-Aerodynamic drag, opposing the direction of relative motion.
-
-Lift forces, acting perpendicular to the relative airflow and strongly influencing orientation.
+  * Gravity, driving the downward motion.
+  * Buoyancy, accounting for the displaced air volume.
+  * Aerodynamic drag, opposing the direction of relative motion.
+  * Lift forces, acting perpendicular to the relative airflow and strongly influencing orientation.
 
 To analyze the motion, we applied Euler’s method for numerical integration, updating position, velocity, orientation, and angular velocity in discrete time steps. Additionally, a custom rotation matrix based on Euler angles (yaw, pitch, roll) was implemented to continuously update the orientation of the sheet in three-dimensional space. This allowed accurate calculation of projected areas and aerodynamic forces at each step.
 
